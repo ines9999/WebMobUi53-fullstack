@@ -16,10 +16,24 @@ Route::apiResource('v1/posts', ApiPostController::class)
     ->middlewareFor(['update'], ['auth:sanctum', 'abilities:posts:update'])
     ->middlewareFor(['destroy'], ['auth:sanctum', 'abilities:posts:delete']);
 
+// Routes publiques pour les sondages (accès via token)
 Route::get('/v1/polls/{token}', [ApiPollController::class, 'show']);
+Route::get('/v1/polls/{token}/results', [ApiPollController::class, 'results']);
 
+
+// Routes authentifiées pour les sondages
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v1/foo', [ApiFooController::class, 'show']);
     Route::post('/v1/foo', [ApiFooController::class, 'store']);
+
+    // Dashboard : liste et création
     Route::get('/v1/polls', [ApiPollController::class, 'index']);
+    Route::post('/v1/polls', [ApiPollController::class, 'store']);
+
+    // Gestion d'un sondage existant
+    Route::put('/v1/polls/{poll}', [ApiPollController::class, 'update']);
+    Route::delete('/v1/polls/{poll}', [ApiPollController::class, 'destroy']);
+
+    // Voter (authentifié)
+    Route::post('/v1/polls/{token}/vote', [ApiPollController::class, 'vote']);
 });

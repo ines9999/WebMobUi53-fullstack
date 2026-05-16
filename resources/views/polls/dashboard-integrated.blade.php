@@ -4,7 +4,7 @@
   </x-slot>
 
   <x-slot:title>
-    Dashboard des sondages intégré
+    Mes sondages
   </x-slot>
 
   <div id="app" data-props='@json(["loginUrl" => route("login")])'></div>
